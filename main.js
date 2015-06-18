@@ -210,7 +210,7 @@ game_state.init = function () {
 		game_state.globals.procons = procons;			// Contains all items that produce/consume stuff per tick
 		game_state.globals.fabricables = fabricables;	
 	}
-}
+};
 
 game_state.process = function () {
 	
@@ -220,13 +220,13 @@ game_state.process = function () {
 	fabricables.sort (function (a, b) {return (a.id < b.id ? -1 : 1);});
 	fabricators.sort (function (a, b) {return (a.uid < b.uid ? -1 : 1);});
 	furnaces.sort (function (a, b) {return (a.uid < b.uid ? -1 : 1);});
-	
-	resources_init();
-	build_init();
-	manufacturer_init();
-	products_init();
-	jettison_init();
-}
+
+	SpaceMiner.Resources.init();
+	SpaceMiner.Build.init();
+	SpaceMiner.Manufacturer.init();
+	SpaceMiner.Products.init();
+	SpaceMiner.Jettison.init();
+};
 
 game_state.reset = function () {
 	game_state.init();
@@ -250,16 +250,16 @@ game_state.reset = function () {
 		if (item.flag.indexOf ("building") > -1) {buildings.push (item);}
 		
 		if (item.flag.indexOf ("product") > -1) {fabricables.push (item);}
-		
-		general_create.call (item, true, item.start_quantity);
+
+		SpaceMiner.General.create.call(item, true, item.start_quantity);
 	}
 	
 	game_state.process();
-}
+};
 
 game_state.save = function () {
 	localStorage["game_state"] = JSON.stringify (game_state);
-}
+};
 
 game_state.load = function () {
 	if (localStorage.getItem ("game_state") != "null") {
@@ -270,7 +270,7 @@ game_state.load = function () {
 		furnaces = game_state.globals.furnaces;
 	}
 	game_state.process();
-}
+};
 
 game_state.index_items = function () {
 	for (var property in this) {
@@ -287,7 +287,7 @@ game_state.index_items = function () {
 			}
 		}
 	}
-}
+};
 
 
 game_state.reset ();
@@ -303,13 +303,13 @@ window.setInterval(function () {
 	timer = (new Date()).getTime();
 		
 	for (var i = 1; i <= time_change/tick_length; i++) {
-		general_tick();
-		resources_graphical_update();
-		build_graphical_update();
-		products_graphical_update();
-		manufacturer_graphical_update();
-		jettison_graphical_update();	
-		count++
+		SpaceMiner.General.tick();
+		SpaceMiner.Resources.graphicalUpdate();
+		SpaceMiner.Build.graphicalUpdate();
+		SpaceMiner.Products.graphicalUpdate();
+		SpaceMiner.Manufacturer.graphicalUpdate();
+		SpaceMiner.Jettison.graphicalUpdate();
+		count++;
 		
 		
 		for (var i = 0; i < resources.length; i++) {
