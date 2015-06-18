@@ -1,0 +1,105 @@
+#resources {
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+    padding: 10px; 
+    float: left;
+	width: 90%;
+}
+
+#info {
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+    padding: 10px; 
+    float: left;
+	width: 90%;
+	clear: left;
+	height: 50%;
+}
+
+#info table{
+	width: 100%;
+}
+
+#info table tr td{
+	width: 50%;
+}
+
+#info-table td {
+	padding: 5px;
+	vertical-align: top;
+}
+#left-column {
+	position: relative;
+    float: left;
+	width: 25%;
+	clear:left;
+}
+
+#central-panel {
+    padding: 5px; 
+    float: left;
+	height: 97%;
+	width: 40%;
+}
+
+#resource-table {
+	width: 100%;
+}
+
+#resource-table td {
+	padding: 3px;
+	font-size: 90%;
+}
+
+div.list-div {
+	padding: 5px;
+}
+
+div.list-div td{
+	padding: 5px;
+}
+
+div.list-div div {
+	min-height: 1em;
+	padding: 5px;
+	overflow: hidden;
+	
+}
+
+.central-menu {
+    border: 2px solid #8AC007;
+	display: none;
+	width: 100%;
+	height: 98%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 10px;
+}
+
+.progress {
+	width: 100%;
+}
+
+
+#jettison-select {
+  height:18px; 
+  width:160px;
+  border:1px solid black;  
+  padding-top:2px;
+  cursor:default;
+}
+#jettison-select-arrow {
+  float:right;
+}
+
+#jettison-dropdown {  
+  display:inline-block;
+  width:160px;
+  border:1px solid cornflowerblue;
+  display:none;
+}
+
+.jettison-opt:hover {
+  background:lightblue;
+  cursor:default;
+}
