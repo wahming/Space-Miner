@@ -1,7 +1,7 @@
 function showTab(tab_name) {
 	$('.central-menu').hide();
 	$('#' + tab_name).show();
-	jettison_displayed = false;
+	var jettison_displayed = false;
 }
 
 var $menuButtons = $('#menu-buttons');
@@ -65,7 +65,7 @@ if (debug) {
 			for (var i = 0; i < keys.length; i++) {
 				var val = test1[keys[i]];
 				//console.log (typeof(val));
-				if (typeof(val) == 'function') {
+				if (typeof(val) === 'function') {
 					test2.print = val.bind(test2);
 				}
 			}
@@ -90,7 +90,7 @@ if (debug) {
 
 	$('#reset-link').on('click', function () {
 		$('.central-menu').hide();
-		game_state.reset();
+		gameState.reset();
 	});
 
 	$('#save-link').on('click', function () {

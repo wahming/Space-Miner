@@ -17,7 +17,7 @@ SpaceMiner.Build = {
 	},
 
 	graphicalUpdate: function () {
-		if ($('#build-menu').css('display') == 'block') {
+		if ($('#build-menu').css('display') === 'block') {
 			for (i in buildings) {
 				if (buildings[i].appear_in_game) {
 					div_name = "div-build-" + buildings[i].id;

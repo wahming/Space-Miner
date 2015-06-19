@@ -6,7 +6,7 @@ var tick_length = 100;
 
 // Global variables
 
-var game_state = {};			// In-game values
+var gameState = {};			// In-game values
 
 var glob = [];					// List of all classes/objects
 var resources = [];				// List of all resources

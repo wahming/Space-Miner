@@ -58,7 +58,7 @@ SpaceMiner.Products = {
 			produces += (product.production[i][1]) + " " + SpaceMiner.General.findObject(product.production[i][0]).name + "<br/>"
 		}
 
-		$('#' + div_name + '-right-table').append("<tr><td valign='top'>Build time:</td><td>" + product.build_time / game_state.building.fabricator.build_speed + " s</td></tr>");
+		$('#' + div_name + '-right-table').append("<tr><td valign='top'>Build time:</td><td>" + product.build_time / gameState.building.fabricator.build_speed + " s</td></tr>");
 		$('#' + div_name + '-right-table').append("<tr><td valign='top'>Cost:</td><td id='" + div_name + "-costs'>" + costs + "</td></tr>");
 		if (produces != "") {
 			$('#' + div_name + '-right-table').append("<tr><td valign='top'>Produces:</td><td><span style='color:blue'>" + produces + "</span></td></tr>");

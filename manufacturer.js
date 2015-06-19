@@ -8,7 +8,7 @@ SpaceMiner.Manufacturer = {
 		this.graphicalInit();
 	},
 	graphicalUpdate: function () {
-		if ($('#manufacturer-menu').css('display') == 'block') {
+		if ($('#manufacturer-menu').css('display') === 'block') {
 			for (var j = 0; j < manufacturer.length; j++) {
 				var man = manufacturer[j];
 				var div_name1 = div_name + man.uid;
@@ -16,10 +16,10 @@ SpaceMiner.Manufacturer = {
 				document.getElementById(div_name1 + "-progress").value = man.current_product_progress;
 				document.getElementById(div_name1 + "-progress").max = man.current_product_build_time;
 				$('#' + div_name1 + "-status").text(man.status);
-				if (man.active === false && man.current_product != null) {
+				if (man.active === false && man.current_product !== null) {
 					$('#' + div_name1 + "-resume").show();
 				}
-				$('#' + div_name1 + "-quantity").text(man.current_product == null ? "-" : SpaceMiner.General.findObject(man.current_product).quantity.toFixed(0));
+				$('#' + div_name1 + "-quantity").text(man.current_product === null ? "-" : SpaceMiner.General.findObject(man.current_product).quantity.toFixed(0));
 			}
 		}
 	},
@@ -70,7 +70,7 @@ SpaceMiner.Manufacturer = {
 		}
 
 		for (var i = 0; i < product.length; i++) {
-			if (product[i].id == selected) {
+			if (product[i].id === selected) {
 				result += "<option id='" + div_name + "-option-" + i + "' value='" + product[i].id + "' selected>" + product[i].name + "</option>";
 			} else {
 				result += "<option id='" + div_name + "-option-" + i + "' value='" + product[i].id + "'>" + product[i].name + "</option>";
@@ -146,19 +146,19 @@ SpaceMiner.Manufacturer = {
 		(function (man, div_name1) {
 			$('#' + div_name1 + '-confirm').on('click', function () {
 				var selected = $('#' + div_name1 + "-dropdown").val();
-				if (man.current_product != selected) {
-					if (selected != 'None') {
+				if (man.current_product !== selected) {
+					if (selected !== 'None') {
 						SpaceMiner.General.setProduction.call(man, selected);
 						document.getElementById(div_name1 + "-progress").max = man.current_product_build_time;
 					} else {
 						SpaceMiner.General.setProduction.call(man, null);
 						document.getElementById(div_name1 + "-progress").max = 0;
 					}
-				} else if (selected != 'None') {
+				} else if (selected !== 'None') {
 					man.active = true;
 				}
 
-				$('#' + div_name1 + "-product").text(man.current_product == null ? "Nothing" : SpaceMiner.General.findObject(man.current_product).name);
+				$('#' + div_name1 + "-product").text(man.current_product === null ? "Nothing" : SpaceMiner.General.findObject(man.current_product).name);
 				$('#' + div_name1 + '-confirm').hide();
 				$('#' + div_name1 + '-cancel').hide();
 				$('#' + div_name1 + "-dropdown").remove();
@@ -169,7 +169,7 @@ SpaceMiner.Manufacturer = {
 
 		(function (div_name1) {
 			$('#' + div_name1 + '-cancel').on('click', function () {
-				$('#' + div_name1 + "-product").text(man.current_product == null ? "Nothing" : SpaceMiner.General.findObject(man.current_product).name);
+				$('#' + div_name1 + "-product").text(man.current_product === null ? "Nothing" : SpaceMiner.General.findObject(man.current_product).name);
 				$('#' + div_name1 + '-confirm').hide();
 				$('#' + div_name1 + '-cancel').hide();
 				$('#' + div_name1 + "-dropdown").remove();

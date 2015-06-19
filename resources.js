@@ -18,7 +18,7 @@ SpaceMiner.Resources = {
 		}
 	},
 
-	grapicalUpdate: function () {
+	graphicalUpdate: function () {
 		for (var i = 0; i < resources.length; i++) {
 			if (resources[i].appear_in_game) {
 				var quantity = resources[i].quantity;

@@ -17,8 +17,8 @@ function affordable (cost, multiplier) {
 		if (this.have_ingredients() && this.buildable){// && has_ingredients) {
 			this.consume_ingredients();
 			this.create_free();
-		}	
-	}
+		}
+	};
 	
 	game_object.fabricate = function () {
 		if (this.fabricable) {
@@ -30,7 +30,7 @@ function affordable (cost, multiplier) {
 			alert ("Error! Attempt to fabricate non-fabricable item");
 		}
 		return false;
-	}
+	};
 	
 	// Should never be called from anywhere else
 	game_object.create_free = function () {
@@ -43,7 +43,7 @@ function affordable (cost, multiplier) {
 		}
 		
 		storage.change_quantity (this.storage_used * -1, true);
-	}
+	};
 	
 	game_object.init_values = function () {
 		this.quantity = 0;
@@ -67,17 +67,17 @@ function affordable (cost, multiplier) {
 		this.current_load = 0;					// How much of capacity is being utilised. E.g. 4 load / 10 capacity
 		this.active = false;					// Is it working? 
 		this.visible = true;					// Invisible items should never show up as unique/changeable items.
-	}
+	};
 	
 	game_object.init = function () {
 		var result = this.init_values ();
-		if (result != null) {
+		if (result !== null) {
 			for (var i = 0; i < result.start_quantity; i++) {
 				result.create_free ();
 			}
 			return result;
 		}
-	}
+	};
 	game_object.init();
 	
 	game_object.tick = function () {
@@ -94,22 +94,22 @@ function affordable (cost, multiplier) {
 				}
 			}
 		}
-	}
+	};
 	
 	game_object.consume_ingredients = function () {
 		var cost = this.cost;
 		for (var i = 0; i < cost.length; i++) {
 			cost[i][0].change_quantity (-1 * cost[i][1]);
 		}
-	}
+	};
 	
 	game_object.have_ingredients = function () {
 		return affordable (this.cost, 1);
-	}
+	};
 	
 	game_object.can_maintain = function () {
 		return affordable (this.consumption, tick_length/1000);
-	}
+	};
 	
 	game_object.change_quantity = function (quantity) {
 		if (storage.change_quantity (this.storage_used * quantity * -1)) {
@@ -117,11 +117,11 @@ function affordable (cost, multiplier) {
 			return true;
 		} 
 		return false;
-	}
+	};
 	
 	game_object.change_capacity = function (quantity) {
 		this.capacity += quantity;
-	}
+	};
 	
 	game_object.info = function () {
 		$('#info-table').empty();
@@ -139,8 +139,8 @@ function affordable (cost, multiplier) {
 				if (this.cost[i][1] > this.cost[i][0].quantity) {
 					costs += "<span style='color: red'>";
 				}
-				
-				costs +=  this.cost[i][1].toFixed(0) + " "  + this.cost[i][0].name + "<br/>"
+
+				costs += this.cost[i][1].toFixed(0) + " " + this.cost[i][0].name + "<br/>";
 				
 				if (this.cost[i][1] > this.cost[i][0].quantity) {
 					costs += "</span>";
@@ -199,11 +199,13 @@ if (debug) {
 			this.build_point_cost = 300;
 			
 			return resource;
-		}
+		};
 		
 		resource.init();
-		resource.tick = function () {}
-		resource.create = function () {}
+		resource.tick = function () {
+		};
+		resource.create = function () {
+		};
 		
 		resource.generation_speed = function () {
 			var total = 0;
@@ -211,7 +213,7 @@ if (debug) {
 				total += this.gen_speed[i];
 			}
 			return total / this.gen_speed.length;
-		}
+		};
 		
 		resource.smelt = function () {		
 			if (this.smeltable) {
@@ -236,7 +238,7 @@ if (debug) {
 		storage.active = true;
 		storage.visible = false;
 		storage.gen_speed = [];
-		storage.unit = "m<sup>3</sup>"
+		storage.unit = "m<sup>3</sup>";
 		
 		resources.push (storage);
 		
@@ -247,14 +249,14 @@ if (debug) {
 				return true;
 			}
 			return false;
-		}
+		};
 	
 		storage.change_capacity = function (quantity) {
 			this.capacity += quantity;
 			this.quantity += quantity;
-		}
+		};
 		return storage;
-	}
+	};
 			
 
 
@@ -271,7 +273,7 @@ if (debug) {
 		resources.push (copper_ore);
 		ores.push (copper_ore);
 		return copper_ore;
-	}
+	};
 	
 	var copper = $.extend (copper, resource);
 	glob.push (copper);
@@ -287,7 +289,7 @@ if (debug) {
 		
 		resources.push (copper);
 		return copper;
-	}
+	};
 	
 	var iron_ore = $.extend (iron_ore, resource);
 	glob.push (iron_ore);
@@ -302,7 +304,7 @@ if (debug) {
 		ores.push (iron_ore);
 		resources.push (iron_ore);
 		return iron_ore;
-	}
+	};
 	
 	var iron = $.extend (iron, resource);
 	glob.push (iron);
@@ -319,7 +321,7 @@ if (debug) {
 		
 		resources.push (iron);
 		return iron;
-	}
+	};
 	
 	var energy = $.extend (energy, resource);
 	glob.push (energy);
@@ -358,7 +360,7 @@ if (debug) {
 		
 		fabricables.push (chassis);
 		return chassis;
-	}
+	};
 	
 	var solar_panel = $.extend (solar_panel, game_object);
 	glob.push (solar_panel);
@@ -374,7 +376,7 @@ if (debug) {
 		
 		fabricables.push (solar_panel);
 		return solar_panel;
-	}
+	};
 
 	var circuit_board = $.extend (circuit_board, game_object);
 	glob.push (circuit_board);
@@ -390,7 +392,7 @@ if (debug) {
 		
 		fabricables.push (circuit_board);
 		return circuit_board;
-	}
+	};
 	
 	var miner = $.extend (miner, game_object);
 	glob.push (miner);
@@ -409,7 +411,7 @@ if (debug) {
 		
 		fabricables.push(miner);
 		return miner;
-	}
+	};
 
 	var warehouse = $.extend (warehouse, game_object);
 	glob.push (warehouse);
@@ -423,7 +425,7 @@ if (debug) {
 		warehouse.cost = [[iron, 500]];
 		
 		return warehouse;
-	}
+	};
 
 	var cargo_hold = $.extend (cargo_hold, game_object);
 	glob.push (cargo_hold);
@@ -437,7 +439,7 @@ if (debug) {
 		cargo_hold.visible = false;
 		
 		return cargo_hold;
-	}
+	};
 	/*
 	var solar_array = $.extend (solar_array, game_object);
 	glob.push (solar_array);
@@ -473,7 +475,7 @@ if (debug) {
 		
 		fabricator_types.push (fabricator);
 		return fabricator;
-	}
+	};
 
 	fabricator.create_free = function () {
 		// Generic method code.
@@ -500,23 +502,23 @@ if (debug) {
 		
 		this.collection.push (fab_instance);
 		add_to_fabricator_list (fab_instance);
-	}
+	};
 		
 	fabricator.produce = function (product) {
 		this.current_product_paid = false;
 		this.current_product = find_object(product);
 		this.current_product_progress = 0;
 		this.active = true;
-		if (product != null) {
+		if (product !== null) {
 			this.current_product_build_cost = this.current_product.build_point_cost;
 		}
-	}
+	};
 
 	fabricator.tick = function () {
 		for (var i = 0 ; i < fabricator.collection.length; i++) {
 			var fab = fabricator.collection[i];
-			
-			if (fab.current_product != null && fab.active) {
+
+			if (fab.current_product !== null && fab.active) {
 			
 				if (!fab.current_product_paid) {
 					if (fab.current_product.have_ingredients()) {
@@ -567,7 +569,7 @@ if (debug) {
 		
 		furnace_types.push (furnace);
 		return furnace;
-	}	
+	};
 	
 	furnace.create_free = function () {
 		// Generic method code.
@@ -594,22 +596,22 @@ if (debug) {
 		
 		this.collection.push (fur_instance);
 		add_to_furnace_list (fur_instance);
-	}
+	};
 		
 	furnace.produce = function (product) {
 		this.current_product = find_object(product);
 		this.current_product_progress = 0;
 		this.active = true;
-		if (product != null) {
+		if (product !== null) {
 			this.current_product_build_cost = this.current_product.build_point_cost;
 		}
-	}
+	};
 	
 	furnace.tick = function () {
 		for (var i = 0 ; i < furnace.collection.length; i++) {
 			var fur = furnace.collection[i];
-			
-			if (fur.current_product != null && fur.active) {			
+
+			if (fur.current_product !== null && fur.active) {
 				if (!fur.current_product_paid) {
 					fur.load = 0;
 					for (var j = 0; j < this.max_load; j++) {

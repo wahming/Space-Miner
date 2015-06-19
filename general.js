@@ -27,7 +27,7 @@ SpaceMiner.General = {
 		$info.append("<tr><td>Quantity: </td><td>" + this.quantity.toFixed(0) + "</td></tr>");
 
 		if (this.build_time > 0) {
-			$info.append("<tr><td>Build time: </td><td>" + this.build_time / game_state.building.fabricator.build_speed + " s</td></tr>");
+			$info.append("<tr><td>Build time: </td><td>" + this.build_time / gameState.building.fabricator.build_speed + " s</td></tr>");
 		}
 
 		if (this.cost.length > 0) {
@@ -77,7 +77,7 @@ SpaceMiner.General = {
 		quantity = typeof (quantity) === "undefined" ? 1 : quantity;
 
 		for (var i = 0; i < quantity; i++) {
-			if (this.storage_used <= game_state.resource.storage.quantity) {
+			if (this.storage_used <= gameState.resource.storage.quantity) {
 				if (!free) {
 					if (this.canAfford(this.cost, this.storage_used)) {
 						this.changeQuantity(this.cost, -1);
@@ -93,11 +93,10 @@ SpaceMiner.General = {
 					new_item.has_collection = false;
 					new_item.name = this.name + " #" + this.built_count;
 					new_item.uid = this.built_count;
-					this.pushToArray.call(new_item);
+					SpaceMiner.General.pushToArray.call(new_item);
 				}
-
-				this.changeCapacity(this.storage);
-				this.changeQuantity([[this.id, 1]]);
+				SpaceMiner.General.changeCapacity(this.storage);
+				SpaceMiner.General.changeQuantity([[this.id, 1]]);
 			}
 		}
 		return true;
@@ -151,7 +150,7 @@ SpaceMiner.General = {
 			}
 		}
 
-		if (storage_needed <= game_state.resource.storage.quantity) {
+		if (storage_needed <= gameState.resource.storage.quantity) {
 			for (i in change) {
 				var obj = this.findObject(change[i][0]);
 				obj.quantity += change[i][1] * sign * multiplier;
@@ -160,7 +159,7 @@ SpaceMiner.General = {
 					obj.quantity = obj.capacity
 				}
 			}
-			game_state.resource.storage.quantity -= storage_needed;
+			gameState.resource.storage.quantity -= storage_needed;
 			return true;
 		}
 		return false;
@@ -198,7 +197,7 @@ SpaceMiner.General = {
 			}
 		}
 
-		if (game_state.resource.storage.quantity < space * multiplier) {
+		if (gameState.resource.storage.quantity < space * multiplier) {
 			return false;
 		}
 		return true;
@@ -211,7 +210,7 @@ SpaceMiner.General = {
 		this.current_product_paid = false;
 		product = this.findObject(product);
 		this.current_product_progress = 0;
-		if (product != null) {
+		if (product !== null) {
 			this.current_product = product.id;
 			this.current_product_build_time = product.build_time;
 			this.active = true;
@@ -222,9 +221,9 @@ SpaceMiner.General = {
 
 	manufacture: function () {
 		if (!this.active) {
-			this.changeQuantity(this.consumption, -1, 0.1 * tick_length / 1000);
+			SpaceMiner.General.changeQuantity(this.consumption, -1, 0.1 * tick_length / 1000);
 		} else if (this.changeMonth(this.consumption, -1, tick_length / 1000)) {
-			if (this.current_product != null && this.active) {
+			if (this.current_product !== null && this.active) {
 				var product = this.findObject(this.current_product);
 				if (!this.current_product_paid) {
 					this.load = 0;
@@ -232,7 +231,7 @@ SpaceMiner.General = {
 						if (this.changeQuantity(product.cost, -1)) {
 							this.current_product_paid = true;
 							this.load++;
-						} else if (j == 0) {
+						} else if (j === 0) {
 							this.status = "Waiting for resources";
 							break;
 						}
@@ -249,7 +248,7 @@ SpaceMiner.General = {
 						if (this.create.call(product, true)) {
 							this.load--;
 							j--;
-							if (this.load == 0) {
+							if (this.load === 0) {
 								this.current_product_progress = 0;
 								this.current_product_paid = false;
 								if (!this.loop_production) {

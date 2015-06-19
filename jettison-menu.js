@@ -6,7 +6,7 @@ SpaceMiner.Jettison = {
 		this._graphicalInit();
 	},
 	graphicalUpdate: function () {
-		if ($('#jettison-menu').css('display') == 'block' && !this._jettisonDisplayed) {
+		if ($('#jettison-menu').css('display') === 'block' && !this._jettisonDisplayed) {
 			$('#jettison-dropdown').empty();
 			for (var i = 0; i < glob.length; i++) {
 				if (glob[i].appear_in_game && glob[i].quantity > 0 && glob[i].jettisonable) {
