@@ -1,6 +1,6 @@
 //Settings
 
-debug = false;
+debug = true;
 tick_length = 100;
 
 
@@ -16,5 +16,3 @@ tick_length = 100;
 	var furnaces = [];
 	var procons = [];		// Contains all items that produce/consume stuff per tick
 	var fabricables = [];			// List of fabricable objects
-
-	var resource_generation_index = 0;

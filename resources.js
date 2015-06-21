@@ -1,7 +1,5 @@
 function resources_init () {
-	resource_generation_index = 0;
 	for (var i = 0; i < resources.length; i++) {
-		resources[i].generation_speed_array.length = 0;
 		resource_last_turn[i] = resources[i].quantity;
 	}	
 	resources_graphical_init();
@@ -54,5 +52,8 @@ function resources_get_generation_speed () {
 		result += gen_speed[i];
 	}
 	
-	return result == 0 ? 0 : result / gen_speed.length;
+	result = test (gen_speed)  * 1000 / tick_length;
+	
+	//return result == 0 ? 0 : result / gen_speed.length;
+	return result == 0 ? 0 : result;
 }
