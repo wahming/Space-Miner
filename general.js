@@ -1,7 +1,34 @@
+function test(test_data) {
+	var xave = (test_data.length-1)/2;
+	var yave = 0;
+	for (i in test_data) {
+		yave += test_data[i];
+	}
+	yave = yave/test_data.length;
+	
+	var sum1 = 0;
+	var sum2 = 0;
+	
+	for (i in test_data) {
+		sum1 += ((i - xave) * (test_data[i] - yave));
+		sum2 += ((i - xave) * (i - xave));
+	}
+	
+	return (sum1/sum2);
+}
+
+
 var resource_last_turn = [];
 var general_info_target = {};
 
 function general_tick () {
+	for (i in furnaces) {
+		general_manufacture.call (furnaces[i]);
+	}
+	for (i in fabricators) {
+		general_manufacture.call (fabricators[i]);
+	}	
+	
 	for (i in procons) {
 		if (procons[i].active) {
 			if (general_change_quantity (procons[i].consumption, -1, tick_length/1000 * procons[i].quantity)) {
@@ -9,13 +36,10 @@ function general_tick () {
 			}
 		}
 	}
+}
+
+function general_info_target () {
 	
-	for (i in furnaces) {
-		general_manufacture.call (furnaces[i]);
-	}
-	for (i in fabricators) {
-		general_manufacture.call (fabricators[i]);
-	}	
 }
 
 function general_info () {
@@ -88,6 +112,8 @@ function general_create (free, quantity) {			// Call on item
 			
 			general_change_capacity (this.storage);
 			general_change_quantity ([[this.id, 1]]);
+		} else {
+			return false;
 		}
 	}
 	return true;
@@ -206,7 +232,7 @@ function general_manufacture () {
 		if (this.current_product_paid) {
 			this.status = this.noun + " (x" + this.load + ")";
 			this.current_product_progress += this.build_speed * tick_length/1000;
-			product.generation_speed_array[resource_generation_index] += this.load * this.build_speed / this.current_product_build_time * tick_length/1000;
+			product.generation_speed_array[product.generation_speed_array.length-1] += this.load * this.build_speed / this.current_product_build_time * tick_length/1000;
 			if (this.current_product_progress >= this.current_product_build_time) {
 				for (var j = 0; j < this.load; j++) {
 					if (general_create.call (product, true)) {

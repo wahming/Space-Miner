@@ -193,9 +193,9 @@ game_state.init = function () {
 	
 	{
 		game_state.product.construction_bot = $.extend (true, {}, game_state.product.template);
-		game_state.product.template.flag.push ("construction");
-		$.extend (game_state.product.template, {id : 'construction_bot', quantity : 0, description : "", name : "Product name", cost : [["chassis", 1], ["solar_panel", 1], ["circuit_board", 3]],
-			storage_used : 1, build_time : 1000, start_quantity : 1, appear_in_game : true, fabricable : true, built_count : 0,
+		game_state.product.construction_bot.flag.push ("construction");
+		$.extend (game_state.product.template, {id : 'construction_bot', quantity : 0, description : "Constructs buildings", name : "Construction bot", cost : [["chassis", 1], ["solar_panel", 1], ["circuit_board", 3]],
+			storage_used : 1, build_time : 1000, start_quantity : 1, appear_in_game : debug, fabricable : true, built_count : 0,
 			active : true, status : "Idle", flavor_text : "Seconds since last accident: ... <b><i>Boom</i></b>", capacity : -1, jettisonable: true});
 	}
 	}
@@ -254,6 +254,12 @@ game_state.reset = function () {
 		general_create.call (item, true, item.start_quantity);
 	}
 	
+	for (i in resources) {
+		for (var j = 0; j < 100; j++) {
+			resources[i].generation_speed_array[j] = 0;
+		}
+	}
+	
 	game_state.process();
 }
 
@@ -262,14 +268,20 @@ game_state.save = function () {
 }
 
 game_state.load = function () {
-	if (localStorage.getItem ("game_state") != "null") {
-		$.extend (true, game_state, JSON.parse (localStorage.getItem ("game_state")));
-		
-		glob = game_state.globals.glob;					// List of all classes/objects
-		fabricators = game_state.globals.fabricators;
-		furnaces = game_state.globals.furnaces;
+	try {	// Catches corrupted save files which prevent game from starting at all - mostly due to a bug in an older version!
+		if (localStorage.getItem ("game_state") != "null") {
+			$.extend (true, game_state, JSON.parse (localStorage.getItem ("game_state")));
+			
+			glob = game_state.globals.glob;					// List of all classes/objects
+			fabricators = game_state.globals.fabricators;
+			furnaces = game_state.globals.furnaces;
+		}
+		game_state.process();
+	} catch (err) {
+		console.log (err);
+		localStorage["game_state"] = null;
+		game_state.reset();
 	}
-	game_state.process();
 }
 
 game_state.index_items = function () {
@@ -297,7 +309,6 @@ game_state.load ();
 // Run UI update code every tick
 var timer = (new Date()).getTime();
 var time_change = 0;
-var count = 9;
 window.setInterval(function () {
 	time_change = (new Date()).getTime() - timer + (time_change % tick_length);
 	timer = (new Date()).getTime();
@@ -308,19 +319,14 @@ window.setInterval(function () {
 		build_graphical_update();
 		products_graphical_update();
 		manufacturer_graphical_update();
-		jettison_graphical_update();	
-		count++
+		jettison_graphical_update();
 		
 		
-		for (var i = 0; i < resources.length; i++) {
-			resources[i].generation_speed_array[resource_generation_index] = (resources[i].quantity - resource_last_turn[i]) * 10;
-			resource_last_turn[i] = resources[i].quantity;
+		for (var j = 0; j < resources.length; j++) {
+			resources[j].generation_speed_array.push (resource_last_turn[j]);
+			resources[j].generation_speed_array.splice (0, 1);
+			resource_last_turn[j] = resources[j].quantity;
 		}
-		resource_generation_index = (resource_generation_index+1) %150;
-	}
-	
-	if (count >= 10) {
-		count -= 10;
 	}
 }, tick_length);
 
