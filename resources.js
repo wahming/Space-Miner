@@ -41,19 +41,28 @@ function resources_graphical_update() {
 			}
 		}
 	}
-};
+}
 
 function resources_get_generation_speed () {
-	var result = 0;
+	var result;
 	var gen_speed = this.generation_speed_array;
 	
-	if (gen_speed.length == 0) {return 0;}
-	for (var i = 0; i < gen_speed.length; i++) {
-		result += gen_speed[i];
+	var xave = (gen_speed.length-1)/2;
+	var yave = 0;
+	for (i in gen_speed) {
+		yave += gen_speed[i];
+	}
+	yave = yave/gen_speed.length;
+	
+	var sum1 = 0;
+	var sum2 = 0;
+	
+	for (i in gen_speed) {
+		sum1 += ((i - xave) * (gen_speed[i] - yave));
+		sum2 += ((i - xave) * (i - xave));
 	}
 	
-	result = test (gen_speed)  * 1000 / tick_length;
-	
-	//return result == 0 ? 0 : result / gen_speed.length;
-	return result == 0 ? 0 : result;
+	result = (sum1/sum2) * 1000 / tick_length
+
+	return result;
 }
