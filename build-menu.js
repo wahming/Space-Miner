@@ -8,9 +8,17 @@ function build_graphical_init() {
 	$('#central-panel').append("<div id='build-menu' class='central-menu'></div>");
 	$('#build-menu').show();
 	
-	for (var i = 0; i < buildings.length; i++) {		
+	$('#build-menu').append ("<div id='build-current' class='list-div' style='border: 2px solid #8AC007;'></div>");
+	$('#build-current').append ("Currently constructing: <span id='build-current-name'>Nothing</span><br/>");
+	$('#build-current').append ("Queued: <span id='build-current-queue'>Nothing</span><br/><br/>");
+	$('#build-current').append ("<progress id='build-current-progress-bar' class='progress' value=" + construction_progress + " max=0></progress>");
+	if (construction_queue.length > 0) {
+		build_current_graphical_init();
+	}
+
+	for (var i = 0; i < buildings.length; i++) {
 		if (buildings[i].appear_in_game) {
-			$('#build-menu').append (build_add_to_menu.call (buildings[i]));
+			build_add_to_menu.call (buildings[i]);
 		}
 	}
 }
@@ -116,16 +124,52 @@ function build_add_to_menu() {
 	$('#' + div_name).append("<div style='clear:both' id='" + div_name + "-button-div'></div>");
 
 	if (this.buildable) {
-		$('#' + div_name + '-button-div').append("<button id='" + div_name + "-build-button'>Build " + this.name + "</button>");
-
+		$('#' + div_name + '-button-div').append ("<button id='" + div_name + "-build-button'>Build " + this.name + "</button>");
 
 		// Add button listener
 		(function(item) {
-			$('#' + div_name + "-build-button").on('click', function () {
-				general_create.call (item);
+			$('#' + div_name + "-build-button").on ('click', function () {
+				build_set_construction.call (item);
 			});
 		}(this));
-		
-		$('#' + div_name).append("<p>-----</p>");
+
+		$('#' + div_name).append ("<p>-----</p>");
 	}
+}
+
+function build_current_graphical_init () {
+	document.getElementById ("build-current-progress-bar").value = construction_progress;
+
+	if (construction_queue.length > 0) {
+		$("#build-current-name").text (construction_queue[0].name);
+		document.getElementById ("build-current-progress-bar").max = construction_queue[0].build_time;
+		$ ("#build-current-queue").empty();
+		for (var i = 1; i < construction_queue.length; i++) {
+			$ ("#build-current-queue").append (construction_queue[i].name + "<br/>");
+		}
+	} else {
+		$ ("#build-current-name").text ("Nothing");
+		$ ("#build-current-queue").text ("Nothing");
+	}
+}
+
+function build_set_construction () {
+	if (general_can_afford (this.cost)){
+		general_change_quantity (this.cost, -1);
+		construction_queue.push (this);
+		build_current_graphical_init ();
+	}
+}
+
+function build_tick () {
+    if (construction_queue.length > 0) {
+		construction_progress += game_state.product.construction_bot.build_speed * game_state.product.construction_bot.quantity * tick_length/1000;
+		document.getElementById ("build-current-progress-bar").value = construction_progress;
+		if (construction_progress > construction_queue[0].build_time) {
+			general_create.call (construction_queue[0], true);
+			construction_queue.splice (0, 1);
+			construction_progress = 0;
+			build_current_graphical_init();
+		}
+    }
 }

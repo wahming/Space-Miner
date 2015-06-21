@@ -1,26 +1,3 @@
-function test(test_data) {
-	var xave = (test_data.length-1)/2;
-	var yave = 0;
-	for (i in test_data) {
-		yave += test_data[i];
-	}
-	yave = yave/test_data.length;
-	
-	var sum1 = 0;
-	var sum2 = 0;
-	
-	for (i in test_data) {
-		sum1 += ((i - xave) * (test_data[i] - yave));
-		sum2 += ((i - xave) * (i - xave));
-	}
-	
-	return (sum1/sum2);
-}
-
-
-var resource_last_turn = [];
-var general_info_target = {};
-
 function general_tick () {
 	for (i in furnaces) {
 		general_manufacture.call (furnaces[i]);
@@ -36,9 +13,11 @@ function general_tick () {
 			}
 		}
 	}
+
+    build_tick ();
 }
 
-function general_info_target () {
+function general_set_info () {
 	
 }
 
@@ -59,7 +38,7 @@ function general_info () {
 				costs += "<span style='color: red'>";
 			}
 			
-			costs +=  this.cost[i][1].toFixed(0) + " "  + general_find_object(this.cost[i][0]).name + "<br/>"
+			costs +=  this.cost[i][1].toFixed(0) + " "  + general_find_object(this.cost[i][0]).name + "<br/>";
 			
 			if (this.cost[i][1] > general_find_object(this.cost[i][0]).quantity) {
 				costs += "</span>";
@@ -99,9 +78,9 @@ function general_create (free, quantity) {			// Call on item
 					general_change_quantity (this.cost, -1);
 				} else {return false;}
 			}
-			
+
 			this.built_count++;
-			
+
 			if (this.has_collection) {
 				var new_item = $.extend ({}, this);
 				new_item.has_collection = false;
@@ -109,7 +88,7 @@ function general_create (free, quantity) {			// Call on item
 				new_item.uid = this.built_count;
 				general_push_to_array.call (new_item);
 			}
-			
+
 			general_change_capacity (this.storage);
 			general_change_quantity ([[this.id, 1]]);
 		} else {

@@ -45,52 +45,8 @@ if (debug) {
 if (debug) {
 	(function() {
 		$('#debug-link').on('click', function () {
-			
-			var a = {a:1, b:2, c:3};
-			a.print = function (){console.log (this);}
-			b = {b:4};
-			var b = $.extend (a, b);
-			//b = $.extend (b, {b:4});
-			
-			console.log (b);
-			
-			var test1 = {};
-			var test2 = {};
-			
-			test1.name = 'id1';
-			test2.name = 'id2';
-			
-			test1.print = function() {
-				console.log ("test1");
-				console.log (this.name);
-				console.log (this);
-			}
-			
-			var keys = Object.keys(test1);
-			
-			for (var i = 0; i < keys.length; i++) {
-				var val = test1[keys[i]];
-				//console.log (typeof(val));
-				if (typeof(val) == 'function') {
-					test2.print = val.bind (test2);
-				}
-			}
-			
-			
-			var keys = Object.keys(test2);
-			for (var i = 0; i < keys.length; i++) {
-				var val = test2[keys[i]];
-			}
-					
-			for (var key in copper) {
-				if (copper.hasOwnProperty(key)) {
-					var val = copper[key];
-					//console.log (key);
-					//console.log (val);
-				}
-			}
-			
-			//console.log (JSON.stringify(copper));
+			general_create.call (game_state.resource.iron, true, 300);
+			general_create.call (game_state.resource.copper, true, 300);
 		});
 	}());
 }
