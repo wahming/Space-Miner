@@ -97,7 +97,7 @@ game_state.init = function () {
 	{	// Class template should list the values that the class uses, for easy personal reference
 		game_state.building.template = $.extend (true, {}, game_state.template);
 		game_state.building.template.flag.push ("building");
-		$.extend (game_state.building.template, {id : 'building-template', quantity : 0, description : "Building description", name : "Building name", cost : [], build_time : 3000, 
+		$.extend (game_state.building.template, {id : 'building-template', quantity : 0, description : "Building description", name : "Building name", cost : [], build_time : 100000,
 			value : 1000, start_quantity : 0, appear_in_game : false, has_children : false, max_load : 0, current_load : 0, has_collection : false, production : [], consumption : [], 
 			storage : [], buildable : false, toggleable : false, built_count : 0, active : true, loop_production : false, current_product : null, noun : "",
 			current_product_progress : 0, current_product_build_time : 0, current_product_paid : false, status : "Stopped", uid : "", has_collection : false, capacity : -1, maintain_paid : false});
@@ -106,7 +106,7 @@ game_state.init = function () {
 		game_state.building.furnace = $.extend (true, {}, game_state.building.template);
 		game_state.building.furnace.flag.push ("furnace", "production");
 		$.extend (game_state.building.furnace, {id : 'furnace', quantity : 0, description : "Electric furnace to smelt ores into metals", name : "Furnace", max_load : 10, build_speed : 100,
-			cost : [["iron", 100], ["copper", 10]], build_time : 3000, flavor_text : "Burn, baby, burn.", start_quantity : 1, appear_in_game : true, 
+			cost : [["iron", 100], ["copper", 10]], build_time : 3000, flavor_text : "Burn, baby, burn.", start_quantity : 1, appear_in_game : true,
 			has_collection : true, consumption : [["energy", 100]], buildable : true, toggleable : true, active : false, noun : "Smelting"});
 	}
 	
@@ -122,7 +122,7 @@ game_state.init = function () {
 		game_state.building.warehouse = $.extend (true, {}, game_state.building.template);
 		game_state.building.warehouse.flag.push ("warehouse", "storage");
 		$.extend (game_state.building.warehouse, {id : 'warehouse', quantity : 0, description : "More place to keep more stuff", 
-			name : "Warehouse", cost : [["iron", 300]], build_time : 6000, flavor_text : "Drawing a blank on whorehouse... I mean.. oops.", appear_in_game : true,  
+			name : "Warehouse", cost : [["iron", 300]], build_time : 6000, flavor_text : "Drawing a blank on whorehouse... I mean.. oops.", appear_in_game : true,
 			consumption : [["energy", 30]], buildable : true, toggleable : true, active : true, storage : [["storage", 5000]]});
 	}
 
@@ -130,7 +130,7 @@ game_state.init = function () {
 		game_state.building.solar_array = $.extend (true, {}, game_state.building.template);
 		game_state.building.solar_array.flag.push ("solar", "energy");
 		$.extend (game_state.building.solar_array, {id : 'solar_array', quantity : 0, description : "Bunch of solar panels to generate power", 
-			name : "Solar array", cost : [["solar_panel", 9], ["iron", 50], ["copper", 100]], build_time : 2000, flavor_text : "Who said too much sun was bad for you?", 
+			name : "Solar array", cost : [["solar_panel", 9], ["iron", 50], ["copper", 100]], build_time : 2000, flavor_text : "Who said too much sun was bad for you?",
 			start_quantity : 1, appear_in_game : true, production : [["energy", 500]], buildable : true, toggleable : true, active : true});
 	}
 
@@ -138,7 +138,7 @@ game_state.init = function () {
 		game_state.building.capacitor_bank = $.extend (true, {}, game_state.building.template);
 		game_state.building.capacitor_bank.flag.push ("storage", "energy");
 		$.extend (game_state.building.capacitor_bank, {id : 'capacitor_bank', quantity : 0, description : "Stores power for when you need it", 
-			name : "Capacitor bank", cost : [["capacitor", 100], ["iron", 10], ["copper", 50]], build_time : 1000, flavor_text : "Of course, it'll be empty when you do need it...", 
+			name : "Capacitor bank", cost : [["capacitor", 100], ["iron", 10], ["copper", 50]], build_time : 1000, flavor_text : "Of course, it'll be empty when you do need it...",
 			start_quantity : 0, appear_in_game : true, storage : [["energy", 5000]], buildable : true, toggleable : true, active : true});
 	}
 	}
@@ -152,7 +152,7 @@ game_state.init = function () {
 		game_state.product.template.flag.push ("product");
 		$.extend (game_state.product.template, {id : 'Product_template', quantity : 0, description : "Product description", name : "Product name", cost : [], storage_used : 0, 
 			build_time : 1000, value : 100, start_quantity : 0, appear_in_game : false, fabricable : false, production : [], storage : [], toggleable : false, built_count : 0,
-			active : false, status : "Stopped", flavor_text : "", capacity : -1, jettisonable: true});
+			active : false, status : "Stopped", flavor_text : "",  jettisonable: true, build_speed : 100, capacity : -1});
 	
 	{
 		game_state.product.chassis = $.extend (true, {}, game_state.product.template);
@@ -165,7 +165,7 @@ game_state.init = function () {
 		game_state.product.capacitor = $.extend (true, {}, game_state.product.template);
 		game_state.product.capacitor.flag.push ("intermediate-parts");
 		$.extend (game_state.product.capacitor, {id : 'capacitor', description : "Backup power supply", name : "Capacitor", cost : [["iron", 2], ["copper", 5]], storage_used : 0.2, 
-			appear_in_game : true, fabricable : true, flavor_text : "Almost as efficient as an old Nokia battery.", build_time : 500,});
+			appear_in_game : true, fabricable : true, flavor_text : "Almost as efficient as an old Nokia battery.", build_time : 500});
 	}
 	
 	{
@@ -194,9 +194,9 @@ game_state.init = function () {
 	{
 		game_state.product.construction_bot = $.extend (true, {}, game_state.product.template);
 		game_state.product.construction_bot.flag.push ("construction");
-		$.extend (game_state.product.template, {id : 'construction_bot', quantity : 0, description : "Constructs buildings", name : "Construction bot", cost : [["chassis", 1], ["solar_panel", 1], ["circuit_board", 3]],
-			storage_used : 1, build_time : 1000, start_quantity : 1, appear_in_game : debug, fabricable : true, built_count : 0,
-			active : true, status : "Idle", flavor_text : "Seconds since last accident: ... <b><i>Boom</i></b>", capacity : -1, jettisonable: true});
+		$.extend (game_state.product.construction_bot, {id : 'construction_bot', quantity : 0, description : "Constructs buildings", name : "Construction bot",
+			cost : [["chassis", 1], ["solar_panel", 1], ["circuit_board", 3]], storage_used : 1, build_time : 1000, start_quantity : 1, appear_in_game : true, fabricable : true, built_count : 0,
+			active : true, status : "Idle", flavor_text : "Seconds since last accident: ... <b><i>Boom</i></b>", jettisonable : true, build_speed : 100});
 	}
 	}
 	
